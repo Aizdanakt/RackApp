@@ -1,10 +1,20 @@
 class App
 
   def call(env)
-    [
-      200,
-      { 'Content-Type' => 'text/plain' },
-      ["Welcome abroad!\n"]
-    ]
+    [status, headers, body]
+  end
+
+  private
+
+  def status
+    200
+  end
+
+  def headers
+    { 'Content-Type' => 'text/plain' }
+  end
+
+  def body
+    ["Welcome abroad!\n"]
   end
 end
