@@ -7,16 +7,21 @@ class App
   STATUS = 200
 
   def call(env)
-    result = RequestHandler.new.call(env)
+    result = TimeService.new
+    options = RequestHandler.new.param_parser(env)
 
-    if result.success?
-      [STATUS, headers, ["#{result.valid_options}\n"]]
+    if success?(result, options)
+      [STATUS, headers, ["#{result.valid_options(options)}\n"]]
     else
-      [400, headers, ["Unknown time format #{result.invalid_options}\n"]]
+      [400, headers, ["Unknown time format #{result.invalid_options(options)}\n"]]
     end
   end
 
   private
+
+  def success?(result, options)
+    options.all? { |item| result.formats.include?(item) }
+  end
 
   def headers
     { 'Content-Type' => 'text/plain' }
