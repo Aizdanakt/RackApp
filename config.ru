@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
+require 'rack'
 require_relative 'app'
 
+ROUTES = {
+  '/time' => App.new
+}.freeze
+
 use Rack::ContentType, 'text/plain'
-run App.new
+run Rack::URLMap.new(ROUTES)
